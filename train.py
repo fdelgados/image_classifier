@@ -70,6 +70,13 @@ parser.add_argument('-p', '--print-every',
                          '%(default)s',
                     metavar='')
 
+parser.add_argument('-m', '--min-accuracy',
+                    dest='min_accuracy',
+                    default=70.0,
+                    type=float,
+                    help='Minimum accuracy that the network must reach as a percentage. Default: %(default)s',
+                    metavar='')
+
 args = parser.parse_args()
 
 data_directory = args.data_directory
@@ -83,6 +90,7 @@ learning_rate = args.learning_rate
 drop_out = args.drop_out
 epochs = args.epochs
 print_every = args.print_every
+min_accuracy = args.min_accuracy
 
 image_utils = ImageUtils(data_directory)
 model_utils = ModelUtils(gpu)
@@ -109,7 +117,7 @@ print('\nEnd of network training.')
 print('\nChecking network accuracy...\n')
 accuracy = model_utils.test_network(trained_model, data_loaders[Phases.TEST_PHASE])
 
-if accuracy * 100 > 70:
+if accuracy >= min_accuracy:
     print('\nSaving checkpoint')
     checkpoint = Checkpoint(trained_model,
                             architecture,
@@ -121,4 +129,5 @@ if accuracy * 100 > 70:
 
     print('\nCheckpoint saved in path {}'.format(path))
 else:
-    print('The network accuracy is too low. Train the network again modifying parameters')
+    print('The network accuracy is too low. It must reach at least {}%.'
+          'Train the network again modifying parameters'.format(min_accuracy))

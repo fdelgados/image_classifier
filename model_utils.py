@@ -253,9 +253,10 @@ class ModelUtils:
 
                 accuracy += torch.mean(equals.type(torch.FloatTensor)).item()
 
-        print('Network ccuracy: {:.2f}%'.format((accuracy * 100) / len(testloader)))
+        percent_accuracy = (accuracy * 100) / len(testloader)
+        print('Network ccuracy: {:.2f}%'.format(percent_accuracy))
 
-        return accuracy
+        return percent_accuracy
 
     def predict(self, image, model, topk=5):
         """
