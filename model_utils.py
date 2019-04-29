@@ -36,7 +36,7 @@ class ModelUtils:
     def __init__(self, gpu_support=False):
         self.device = torch.device('cuda' if torch.cuda.is_available() and gpu_support else 'cpu')
 
-    def build_model(self, architecture, num_classes, dropout_prob=0.2, silent=False):
+    def build_model(self, architecture, num_classes, dropout_prob=0.2):
         model = None
         if architecture == 'vgg':
             ''' vgg16 Layers
@@ -103,8 +103,7 @@ class ModelUtils:
         else:
             raise ValueError('{} is not a valid architecture'.format(architecture))
 
-        if not silent:
-            print('Network architecture: {}'.format(model.name))
+        print('\nNetwork architecture: {}\n'.format(model.name))
 
         return model
 
